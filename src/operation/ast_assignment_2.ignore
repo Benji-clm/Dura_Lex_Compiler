@@ -1,0 +1,71 @@
+#include "operation/ast_assignment.hpp"
+#include "operation/ast_operation.hpp"
+
+namespace ast
+{
+
+void
+Assignment::EmitRISC (std::ostream &stream, Context &context,
+                      std::string &dest_reg) const
+{
+
+  std::string tmp_reg = context.allocate_reg ();
+  context.setLeftOp (true);
+  unary_expression->EmitRISC (stream, context, tmp_reg);
+  context.setLeftOp (false);
+  //   tmp_reg may store address of unary_expression
+
+  TypeSpecifier type = unary_expression->getType (context);
+  context.setCurrentType (type);
+
+  std::string identifier = unary_expression->getIdentifier ();
+
+  switch (Assign_op)
+    {
+    case AssignmentOp::ASSIGN:
+
+      // results of right_op stored in dest_reg
+      assignment_expression->EmitRISC (stream, context, dest_reg);
+      if (context.isArray (identifier))
+        {
+          context.store (stream, identifier, dest_reg, tmp_reg);
+        }
+      else
+        {
+          context.store (stream, identifier, dest_reg);
+        }
+      context.deallocate_reg (tmp_reg);
+      break;
+    default:
+
+      switch (Assign_op)
+        {
+        case AssignmentOp::ADD_ASSIGN:
+          Operation (unary_expression, OpType::ADD, assignment_expression);
+        }
+    }
+}
+
+void
+Assignment::Print (std::ostream &stream) const
+{
+  unary_expression->Print (stream);
+  stream << Assign_op << std::endl;
+  assignment_expression->Print (stream);
+}
+}
+
+/*
+Assign types:
+
+">>="			 {return(RIGHT_ASSIGN);}
+"<<="      {return(LEFT_ASSIGN);}
+"+="			 {return(ADD_ASSIGN);}
+"-="       {return(SUB_ASSIGN);}
+"*="       {return(MUL_ASSIGN);}
+"/="			 {return(DIV_ASSIGN);}
+"%="			 {return(MOD_ASSIGN);}
+"&="       {return(AND_ASSIGN);}
+"^="			 {return(XOR_ASSIGN);}
+"|="       {return(OR_ASSIGN);}
+*/
