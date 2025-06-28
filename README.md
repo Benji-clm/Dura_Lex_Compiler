@@ -1,69 +1,56 @@
-2024/25 Compilers Coursework
-==============================
+# Dura Lex Sed Lex - Compilers Coursework (2024/25)
 
-There are two components to the coursework:
+This repository contains the coursework for the 2024/25 Compilers module at Imperial College London.
 
-- Worth 90%:
-    - **A C compiler**. The source language is pre-processed C90, and the target language is RISC-V assembly. The target environment is Ubuntu 22.04, as described [here](docs/environment_guide.md). See [here](docs/c_compiler.md) for the full set of requirements and more information about the testing environment.
+## Project Overview
 
-- Worth 10%:
-    - **Overall design style and code readability.** This has been introduced to reward thoughtful planning throughout the project, rather than penalise you. There are no strict guidelines, but you should consider the use of abstraction, your internal representation of instructions, proper Git use, signs of appropriate testing, as well as general code hygiene.
-    - **Evidence of time-tracking/project management.** This will be assessed orally at the start of Summer term. See [here](docs/management.md) for more information about this component.
+This project involves building a compiler for a simplified programming language. Key tasks include:
 
-Repositories
-============
+- Lexical analysis
+- Parsing
+- Abstract Syntax Tree (AST) generation
+- Semantic analysis
+- Code generation and optimization
 
-Each group gets a bare private repository. It is up to you if you want to clone the main specification, or to start from scratch.
+The goal is to transform source code written in a custom language into working RISC-V assembly.
 
-Submission
-==========
+## Structure
 
-The deadline for submitting your C compiler is **Friday 21 March 2025 at 15:00**. There is no deadline for the project management component; instead, this will be assessed by a short oral viva that will be organised in Summer term.
+```
 
-Submission will be via GitHub (code) and Teams (commit hash), as in the labs.
+.
+├── src/                  # Source files for the compiler
+├── include/              # Header files
+├── compiler\_tests/       # Provided test cases
+├── docs/                 # Documentation
+├── scripts/              # Useful helper scripts
+├── Makefile              # Build configuration
+└── test.sh               # Automated test script
 
-All submissions will be tested functionally -- there is no expectation for your compiler to *optimise* its input. Moreover, your compiler will only be tested on *valid* inputs, so you do not need to handle faulty inputs in a graceful way.
+````
 
-Changelog
-=========
+## Running Tests
 
-* New for 2023/2024:
+For the development we used an Ubuntu 22.04 Dockerfile, containing all the needed tools for testing and compiling. If you want to test the compiler, clone this repo and re-open it in the Docker Container.
 
-    * Provided guidance to generate coverage information.
-    * Expanded features list and provided a visual test case distribution.
-    * Included useful links to Godbolt, simulator, ISA, ABI, Assembler reference.
-    * Directly linked to ANSI C parser and lexer.
-    * Added a "Getting started" guide and incorporated last year's feedback from Ed.
-    * Changed the 10% of the grade (previously only for time management) to also account for code design to reward thoughtful planning.
-    * Improved the skeleton compiler to be more advanced by integrating lexer and parser to hopefully jump-start progress and avoid unnecessary debugging.
-    * Covered assembler directives in more details by showcasing the meaning behind an example assembly program, because that topic had always caused confusion in the past years.
-    * Added an improved testing script written in Python.
+Then you can simply run:
 
-* New for 2022/2023:
+```bash
+./test.sh
+```
 
-    * Target architecture is now RISC-V rather than MIPS, in order to align with the modernised Instruction Architectures half of the module.
-    * Instead of Vagrant, Docker is now used for the testing environment (with optional VS Code support).
-    * Test scripts are now provided to check your compiler against the set of public tests, without having to write this yourself.
-    * The basic compiler framework has been improved to support command line arguments.
-    * GitHub Actions can now perform automated testing of your compiler.
+or
 
-* New for 2021/2022:
+```
+scripts/test.py
+```
 
-    * Various improvements to scripts for running test cases.
+**Note**: I have modified the Makefile and the Python code to enable multithreading and increase the number of jobs in the queue. This significantly improves testing speed, but may cause tests to fail intermittently due to out-of-order execution.
 
-* New for 2020/2021:
+## Acknowledgements
 
-    * In previous years, students were additionally required to submit a C-to-Python translator, as a "ramping up" task. This extra deliverable has been removed, as the labs provide plenty of "ramping up" practice.
+[godbolt](https://godbolt.org/) was an absolute really helpful ino having an insight into different levels of optimisations when doing the code generation.
 
-    * We have provided a really basic compiler that simply ignores its input and produces a fixed, valid RISC-V assembly program. This should help you to get started a bit more rapidly.
+[port70.net](https://port70.net/~nsz/c/c99/n1256.html) for providing C documnetations to help understand how C works.
 
-* New for 2019/2020:
-
-    * In previous years, students were additionally required to submit a set of testcases. This deliverable has been removed; instead, a large collection of testcases has been provided for you, as this was judged to be more useful.
-
-    * In previous years, the compiler component counted for 42.8% of the module; it now counts for 55%. It was felt that this weighting more accurately reflects the effort that students put in to building a working compiler.
-
-Acknowledgements
-================
-
-The coursework was originally designed by [David Thomas](https://www.southampton.ac.uk/people/5z9bmb/professor-david-thomas), who lectured this module until 2017-18. It is nowadays maintained by [John Wickerson](https://johnwickerson.github.io/), to whom any feedback should be sent. I'd like to thank Quentin Corradi, Archie Crichton, Yann Herklotz, William Huynh, James Nock, Simon Staal, and Filip Wojcicki for making many contributions to this repository over several years, such as improving the compiler-testing scripts, providing a basic "getting started" compiler, writing instructions for setting up development environments on a variety of operating systems, configuring automation using GitHub actions, and setting up coverage testing.
+Special thanks to [saturn691](https://github.com/saturn691) for giving me guidance and tips to write the compiler.
