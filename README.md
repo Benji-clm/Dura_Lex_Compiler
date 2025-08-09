@@ -49,7 +49,7 @@ scripts/test.py
 
 ## Acknowledgements
 
-[godbolt](https://godbolt.org/) was an absolute really helpful ino having an insight into different levels of optimisations when doing the code generation.
+[godbolt](https://godbolt.org/) was an absolute saviour for giving insights into different levels of optimisations when doing the code generation.
 
 [port70.net](https://port70.net/~nsz/c/c99/n1256.html) for providing C documnetations to help understand how C works.
 
